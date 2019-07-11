@@ -10,20 +10,19 @@
     </div>
     <mt-tabbar fixed>
     <mt-tab-item id="1" icon="back">
-      上一章
+      上一章节
     </mt-tab-item>
     <mt-tab-item id="2">
       目录
     </mt-tab-item>
     <mt-tab-item id="3" icon="next">
-      下一章
+      下一章节
     </mt-tab-item>
   </mt-tabbar>
   </div>
 </template>
 
 <script>
-
 export default {
   name: 'home',
   data() {
