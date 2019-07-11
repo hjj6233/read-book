@@ -1,10 +1,5 @@
 import axios from 'axios'
-// import router from '../router/index'
-import {
-  Loading,
-  Message
-} from 'element-ui'
-
+import { Indicator,Toast } from 'mint-ui'
 axios.defaults.withCredentials = true
 
 if (process.env.NODE_ENV === 'development') {
@@ -30,23 +25,19 @@ axios.interceptors.request.use(
 axios.interceptors.response.use(
   response => {
     // 响应处理
-    loading && loading.close()
+    // loading && loading.close()
+    Indicator.close()
     return response;
   },
   error => {
     if (error.response) {
       // 请求已发出，但服务器响应的状态码不在 2xx 范围内
-      Message({
-        message: `错误码：${error.response.status} ${error.response.data}`,
-        type: 'error'
-      })
+      Toast({message: `错误码：${error.response.status} ${error.response.data}`})
     } else {
-      Message({
-        message: error.message,
-        type: 'error'
-      })
+      Toast({message: error.message})
     }
-    loading && loading.close()
+    // loading && loading.close()
+    Indicator.close()
     return Promise.reject(error)
   }
 )
@@ -60,12 +51,10 @@ export default function ajaxMethod(options = {}) {
     showLoading
   } = options
   if (!showLoading) { // 如果没传showLoading，默认显示加载层。传true不显示
-    loading = Loading.service({
-      lock: true,
-      text: 'Loading',
-      spinner: 'el-icon-loading',
-      background: 'rgba(0, 0, 0, 0.7)'
-    })
+    Indicator.open({
+      text: 'Loading...',
+      spinnerType: 'fading-circle'
+    });
   }
   let config = {}
   if (!formSubmit) {

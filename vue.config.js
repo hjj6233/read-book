@@ -58,10 +58,10 @@ module.exports = {
     chainWebpack: (config) => {
       // 因为是多页面，所以取消 chunks，每个页面只对应一个单独的 JS / CSS
       config.optimization
-        .splitChunks({
-          cacheGroups: {}
-        });
-  
+      .splitChunks({
+        cacheGroups: {}
+      });
+      config.resolve.symlinks(true);
       // 'src/lib' 目录下为外部库文件，不参与 eslint 检测
     //   config.module
     //     .rule('eslint')
@@ -96,12 +96,14 @@ module.exports = {
     // All options for webpack-dev-server are supported
     // https://webpack.js.org/configuration/dev-server/
     devServer: {
-      open: true,
+      open: false,
   
-      host: '127.0.0.1',
-  
+      host: '0.0.0.0', // can be overwritten by process.env.HOST
+
       port: 3000,
-  
+
+      useLocalIp: true,
+
       https: false,
   
       hotOnly: false,

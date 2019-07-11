@@ -1,13 +1,15 @@
 import Vue from 'vue'
-import App from './App.vue'
 import router from './router'
 import store from './store'
 import global from './utility/index'
-import ElementUI from 'element-ui'
-import 'element-ui/lib/theme-chalk/index.css'
+import Mint from 'mint-ui'
+import 'mint-ui/lib/style.css'
+import './static/css/reset.css'
+import './static/css/common.css'
+import App from './App.vue'
 
 Vue.use(global)
-Vue.use(ElementUI)
+Vue.use(Mint)
 Vue.config.productionTip = false
 
 new Vue({
