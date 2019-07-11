@@ -33,7 +33,7 @@ export default {
     }
   },
   created() {
-    this.id = this.$route.params.id
+    if(this.$route.params.id) this.id = this.$route.params.id
   },
   mounted() {
     this.ajaxMethod({
