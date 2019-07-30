@@ -10,13 +10,13 @@
     </div>
     <mt-tabbar fixed>
     <mt-tab-item id="1" icon="back">
-      上一章节
+      <a  @click="preChapter">上一章节</a>
     </mt-tab-item>
     <mt-tab-item id="2">
-      目录
+      <a @click="goCatalogue">目录</a>
     </mt-tab-item>
     <mt-tab-item id="3" icon="next">
-      下一章节
+      <a @click="nextChapter">下一章节</a>
     </mt-tab-item>
   </mt-tabbar>
   </div>
@@ -28,11 +28,13 @@ export default {
   data() {
     return {
       content:{},
-      id: 1
+      id: 1,
+      total: 0
     }
   },
   created() {
     if(this.$route.params.id) this.id = this.$route.params.id
+    if(this.$route.params.total) this.total = this.$route.params.total
   },
   mounted() {
     this.ajaxMethod({
@@ -44,7 +46,37 @@ export default {
     })
   },
   methods: {
-    
+    goCatalogue() {
+      this.$router.push('/')      
+    },
+    preChapter() {
+      if(this.id > 1) {
+        this.id--
+        this.ajaxMethod({
+          method: 'get',
+          url: 'http://localhost:8080/getContent',
+          data: { id: this.id },
+        }).then(res => {
+          this.content = res
+        })
+      } else {
+        this.$toast('没有更多了~')
+      }
+    },
+    nextChapter() {
+      if(this.id < this.total) {
+        this.id++
+        this.ajaxMethod({
+          method: 'get',
+          url: 'http://localhost:8080/getContent',
+          data: { id: this.id },
+        }).then(res => {
+          this.content = res
+        })
+      } else {
+        this.$toast('没有更多了~')
+      }
+    }
   }
 }
 </script>

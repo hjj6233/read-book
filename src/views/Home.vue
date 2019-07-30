@@ -29,7 +29,7 @@ export default {
   },
   methods: {
     goContent(id){
-      this.$router.push({name:'about', params:{ id }})
+      this.$router.push({name:'about', params:{ id, total: this.lists.length }})
     }
   }
 }
