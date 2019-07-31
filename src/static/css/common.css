@@ -1,1 +1,10 @@
 @charset "utf-8";
+.btn-primary {
+  color: #fff;
+  background-color: #26a2ff;
+  border-radius: 3px;
+}
+#searchContainer .mint-searchbar-cancel {
+  font-size: 14px;
+  font-weight: bold;
+}

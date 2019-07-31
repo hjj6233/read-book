@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <mt-header fixed :title="content.title">
-      <router-link to="/" slot="left">
+      <router-link to="/list" slot="left">
         <mt-button icon="back">返回</mt-button>
       </router-link>
     </mt-header>
@@ -9,13 +9,13 @@
       <p class="small-font" v-for="item in content.paraList" :key="item.id">{{item.paragraph}}</p>
     </div>
     <mt-tabbar fixed>
-    <mt-tab-item id="1" icon="back">
+    <mt-tab-item icon="back">
       <a  @click="preChapter">上一章节</a>
     </mt-tab-item>
-    <mt-tab-item id="2">
+    <mt-tab-item>
       <a @click="goCatalogue">目录</a>
     </mt-tab-item>
-    <mt-tab-item id="3" icon="next">
+    <mt-tab-item icon="next">
       <a @click="nextChapter">下一章节</a>
     </mt-tab-item>
   </mt-tabbar>
@@ -28,34 +28,41 @@ export default {
   data() {
     return {
       content:{},
-      id: 1,
-      total: 0
+      chapter: {
+        id: 1,
+        total: 0
+      }
     }
   },
   created() {
-    if(this.$route.params.id) this.id = this.$route.params.id
-    if(this.$route.params.total) this.total = this.$route.params.total
+    if(this.$route.params.id && this.$route.params.total) {
+      this.chapter.id = this.$route.params.id
+      this.chapter.total = this.$route.params.total
+      sessionStorage.setItem("chapter",JSON.stringify(this.$route.params))
+    } else {
+      this.chapter = JSON.parse(sessionStorage.getItem("chapter")) 
+    }
   },
   mounted() {
     this.ajaxMethod({
       method: 'get',
-      url: 'http://localhost:8080/getContent',
-      data: { id: this.id },
+      url: '/getContent',
+      data: { id: this.chapter.id },
     }).then(res => {
       this.content = res
     })
   },
   methods: {
     goCatalogue() {
-      this.$router.push('/')      
+      this.$router.push('/list')      
     },
     preChapter() {
-      if(this.id > 1) {
-        this.id--
+      if(this.chapter.id > 1) {
+        this.chapter.id--
         this.ajaxMethod({
           method: 'get',
-          url: 'http://localhost:8080/getContent',
-          data: { id: this.id },
+          url: '/getContent',
+          data: { id: this.chapter.id },
         }).then(res => {
           this.content = res
         })
@@ -64,12 +71,12 @@ export default {
       }
     },
     nextChapter() {
-      if(this.id < this.total) {
-        this.id++
+      if(this.chapter.id < this.chapter.total) {
+        this.chapter.id++
         this.ajaxMethod({
           method: 'get',
-          url: 'http://localhost:8080/getContent',
-          data: { id: this.id },
+          url: '/getContent',
+          data: { id: this.chapter.id },
         }).then(res => {
           this.content = res
         })

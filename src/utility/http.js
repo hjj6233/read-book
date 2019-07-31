@@ -9,6 +9,7 @@ if (process.env.NODE_ENV === 'development') {
   // 生产环境设置
   //   axios.defaults.baseURL = ''
 }
+axios.defaults.baseURL = 'http://localhost:8080'
 // 存储全局加载动画状态
 let loading = null
 // 请求拦截器
